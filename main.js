@@ -3,9 +3,37 @@ const EMPTY_HEART = '♡'
 const FULL_HEART = '♥'
 
 // Your JavaScript code goes here!
+const errorModal = document.getElementById("modal");
+errorModal.classList.add("hidden");
 
+const emptyHearts = document.querySelectorAll(".like-glyph");
+emptyHearts.forEach((heart) => {
+heart.addEventListener("click", () => {
+mimicServerCall()
+.then(() => {
+heart.classList.add("activated-heart");
+heart.classList.toggle("fa-heart-o");
+heart.classList.toggle("fa-heart");
+})
+.catch(() => {
+errorModal.classList.remove("hidden");
+const serverErrorMessage = document.getElementById("modal-message");
+serverErrorMessage.textContent = "Oops! Something went wrong.";
+setTimeout(() => {
+errorModal.classList.add("hidden");
+}, 3000);
+});
+});
+});
 
-
+const fullHearts = document.querySelectorAll(".activated-heart");
+fullHearts.forEach((heart) => {
+heart.addEventListener("click", () => {
+heart.classList.toggle("fa-heart-o");
+heart.classList.toggle("fa-heart");
+heart.classList.remove("activated-heart");
+});
+});
 
 //------------------------------------------------------------------------------
 // Don't change the code below: this function mocks the server response
@@ -23,3 +51,5 @@ function mimicServerCall(url="http://mimicServer.example.com", config={}) {
     }, 300);
   });
 }
+
+ 
